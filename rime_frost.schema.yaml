@@ -1,0 +1,66 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: rime_frost
+  name: "白霜拼音词库"
+  version: "2026-04-25"
+  author:
+    - gaboolic
+  description: |
+    白霜拼音最小编译方案。本配置只用于编译 rime_frost 词库，供五笔混输方案引用。
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - script_translator
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  delimiter: " '"
+  algebra:
+    - abbrev/^([a-z]).+$/$1/
+    - abbrev/^([zcs]h).+$/$1/
+    - derive/in$/ing/
+    - derive/ing$/in/
+    - derive/en$/eng/
+    - derive/eng$/en/
+    - derive/on$/ong/
+    - derive/ong$/on/
+    - derive/^r/l/
+    - derive/^l/r/
+    - derive/^([nl])ve$/$1ue/
+    - derive/^([jqxy])u/$1v/
+    - derive/^([nl])ue$/$1ve/
+    - derive/^([jqxy])v/$1u/
+
+translator:
+  dictionary: rime_frost
+  initial_quality: 1
+  preedit_format:
+    - xform/([nl])v/$1v/
+    - xform/([nl])ue/$1ve/
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default

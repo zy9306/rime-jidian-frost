@@ -2,6 +2,9 @@
 .idea/*
 .git/*
 .DS_Store
+__pycache__/
+scripts/__pycache__/
+dist/
 build
 installation.yaml
 user.yaml
@@ -12,3 +15,5 @@ user.txt
 pinyin_simp.userdb/*
 
 others
+
+wubi86_jidian_pinyin_review.tsv
