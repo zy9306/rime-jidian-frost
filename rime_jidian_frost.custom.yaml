@@ -1,6 +1,0 @@
-# encoding: utf-8
-
-patch:
-  # 在 speller 处理字母前，如果当前只有一个标点候选，先提交该标点，
-  # 再让这个字母继续作为下一段正常编码处理。
-  engine/processors/@before 3: lua_processor@*punct_auto_commit_processor
