@@ -1,5 +1,6 @@
 PYTHON ?= python
 RIME_DEPLOYER ?= /Library/Input Methods/Squirrel.app/Contents/MacOS/rime_deployer
+SHARED_DATA_DIR ?= /Library/Input Methods/Squirrel.app/Contents/SharedSupport
 ROOT := $(CURDIR)
 
 .PHONY: help
@@ -15,7 +16,7 @@ help:
 
 .PHONY: build
 build:
-	"$(RIME_DEPLOYER)" --build "$(ROOT)"
+	"$(RIME_DEPLOYER)" --build "$(ROOT)" "$(SHARED_DATA_DIR)" "$(ROOT)/build"
 
 .PHONY: pack
 pack:
@@ -40,4 +41,4 @@ format-check:
 .PHONY: check
 check:
 	$(PYTHON) -m py_compile scripts/pack.py scripts/update_upstream_dicts.py scripts/format_yaml.py
-	"$(RIME_DEPLOYER)" --build "$(ROOT)"
+	"$(RIME_DEPLOYER)" --build "$(ROOT)" "$(SHARED_DATA_DIR)" "$(ROOT)/build"

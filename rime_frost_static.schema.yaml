@@ -1,0 +1,92 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: rime_frost_static
+  name: "白霜拼音（不调频）"
+  version: "2026-04-25"
+  author:
+    - gaboolic
+  description: |
+    白霜拼音纯拼音方案，关闭用户词典学习，候选排序保持静态词频。
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [中, En]
+  - name: zh_trad
+    reset: 0
+    states: [简体, 繁体]
+  - name: full_shape
+    states: [半角, 全角]
+  - name: ascii_punct
+    states: [。，, ．，]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - script_translator
+  filters:
+    - simplifier@tradition
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  delimiter: " '"
+  algebra:
+    - abbrev/^([a-z]).+$/$1/
+    - abbrev/^([zcs]h).+$/$1/
+    - derive/in$/ing/
+    - derive/ing$/in/
+    - derive/en$/eng/
+    - derive/eng$/en/
+    - derive/on$/ong/
+    - derive/ong$/on/
+    - derive/^r/l/
+    - derive/^l/r/
+    - derive/^([nl])ve$/$1ue/
+    - derive/^([jqxy])u/$1v/
+    - derive/^([nl])ue$/$1ve/
+    - derive/^([jqxy])v/$1u/
+
+translator:
+  dictionary: rime_frost
+  enable_completion: true
+  enable_sentence: true
+  # 关闭用户词典，避免候选排序随输入习惯自动调频。
+  enable_user_dict: false
+  # 关闭自动编码器，避免根据输入历史自动造词。
+  enable_encoder: false
+  # 不记录已上屏词组给编码器使用。
+  encode_commit_history: false
+  initial_quality: 1
+  preedit_format:
+    - xform/([nl])v/$1v/
+    - xform/([nl])ue/$1ve/
+
+tradition:
+  opencc_config: s2hk.json
+  option_name: zh_trad
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default

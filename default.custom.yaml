@@ -9,6 +9,7 @@ patch:
   schema_list:
     - schema: rime_jidian_frost # 五笔白霜混输
     - schema: rime_frost # 白霜拼音
+    - schema: rime_frost_static # 白霜拼音（不调频）
 
   # Menu
   menu:
