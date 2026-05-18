@@ -3,12 +3,24 @@
 
 schema:
   schema_id: rime_frost
-  name: "白霜拼音词库"
+  name: "白霜拼音"
   version: "2026-04-25"
   author:
     - gaboolic
   description: |
-    白霜拼音最小编译方案。本配置只用于编译 rime_frost 词库，供五笔混输方案引用。
+    白霜拼音纯拼音方案，同时供五笔混输方案引用。
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [中, En]
+  - name: zh_trad
+    reset: 0
+    states: [简体, 繁体]
+  - name: full_shape
+    states: [半角, 全角]
+  - name: ascii_punct
+    states: [。，, ．，]
 
 engine:
   processors:
@@ -29,6 +41,8 @@ engine:
   translators:
     - punct_translator
     - script_translator
+  filters:
+    - simplifier@tradition
 
 speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba
@@ -51,10 +65,17 @@ speller:
 
 translator:
   dictionary: rime_frost
+  enable_completion: true
+  enable_sentence: true
+  enable_user_dict: true
   initial_quality: 1
   preedit_format:
     - xform/([nl])v/$1v/
     - xform/([nl])ue/$1ve/
+
+tradition:
+  opencc_config: s2hk.json
+  option_name: zh_trad
 
 punctuator:
   import_preset: default

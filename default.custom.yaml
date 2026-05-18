@@ -8,6 +8,7 @@ patch:
   # 菜单中可选的方案列表，可根据喜好自行调整顺序，第一位为默认方案
   schema_list:
     - schema: rime_jidian_frost # 五笔白霜混输
+    - schema: rime_frost # 白霜拼音
 
   # Menu
   menu:
