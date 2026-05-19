@@ -50,7 +50,18 @@ speller:
   delimiter: " '"
   algebra:
     - erase/^xx$/
-    - derive/^([jqxy])u$/$1v/
+    - derive/in$/ing/
+    - derive/ing$/in/
+    - derive/en$/eng/
+    - derive/eng$/en/
+    - derive/on$/ong/
+    - derive/ong$/on/
+    - derive/^r/l/
+    - derive/^l/r/
+    - derive/^([nl])ve$/$1ue/
+    - derive/^([jqxy])u/$1v/
+    - derive/^([nl])ue$/$1ve/
+    - derive/^([jqxy])v/$1u/
     - derive/^([aoe])([ioun])$/$1$1$2/
     - xform/^([aoe])(ng)?$/$1$1$2/
     - xform/iu$/Ⓠ/
