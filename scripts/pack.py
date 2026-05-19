@@ -17,6 +17,8 @@ PACKAGE_FILES = (
     "rime_user.dict.yaml",
     "rime_frost.schema.yaml",
     "rime_frost_static.schema.yaml",
+    "rime_frost_double_pinyin_flypy.schema.yaml",
+    "rime_frost_double_pinyin_flypy_static.schema.yaml",
     "rime_frost.dict.yaml",
     "jidian_dicts/wubi86_jidian.dict.yaml",
     "jidian_dicts/wubi86_jidian_extra.dict.yaml",

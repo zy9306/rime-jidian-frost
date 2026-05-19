@@ -1,12 +1,12 @@
 # 极点五笔86·白霜混输
 
-这是一份个人 Rime 配置，包含三份输入方案：`极点五笔86·白霜混输`、`白霜拼音` 和 `白霜拼音（不调频）`。
+这是一份个人 Rime 配置，包含五份输入方案：`极点五笔86·白霜混输`、`白霜拼音`、`白霜拼音（不调频）`、`白霜小鹤双拼` 和 `白霜小鹤双拼（不调频）`。
 
 主方案文件：`rime_jidian_frost.schema.yaml`
 
 主方案 ID：`rime_jidian_frost`
 
-本配置把极点五笔 86 作为主输入，三码起无前缀混入白霜拼音候选；同时保留可直接切换使用的纯白霜拼音方案 `rime_frost`，以及关闭自动调频的静态方案 `rime_frost_static`。
+本配置把极点五笔 86 作为主输入，三码起无前缀混入白霜拼音候选；同时保留可直接切换使用的纯白霜拼音方案 `rime_frost`、关闭自动调频的静态方案 `rime_frost_static`，以及复用白霜词库的小鹤双拼方案。
 
 ## 上游来源
 
@@ -23,6 +23,8 @@
 - `rime_jidian_frost.schema.yaml`：极点五笔 + 白霜拼音混输方案
 - `rime_frost.schema.yaml`：白霜拼音纯拼音方案，同时作为混输依赖
 - `rime_frost_static.schema.yaml`：白霜拼音纯拼音方案，关闭自动调频
+- `rime_frost_double_pinyin_flypy.schema.yaml`：白霜小鹤双拼方案
+- `rime_frost_double_pinyin_flypy_static.schema.yaml`：白霜小鹤双拼方案，关闭自动调频
 - `rime_jidian.dict.yaml`：五笔入口词库，聚合极点主词库、个人词库和扩展词库
 - `rime_user.dict.yaml`：个人词库
 - `jidian_dicts/wubi86_jidian.dict.yaml`：极点五笔主码表
@@ -68,10 +70,11 @@
 
 - `rime_frost.schema.yaml` 被裁剪为轻量纯拼音方案，用于直接输入拼音，也供 `rime_jidian_frost` 反查混输。
 - `rime_frost_static.schema.yaml` 复用白霜词库和拼写规则，关闭 `enable_user_dict`，用于不自动调频的纯拼音输入。
+- `rime_frost_double_pinyin_flypy.schema.yaml` 和 `rime_frost_double_pinyin_flypy_static.schema.yaml` 复用本地轻量白霜结构，只迁移上游小鹤双拼的 `speller/algebra` 和 `translator/preedit_format`。
 - 移除了白霜完整方案中的 Lua 功能、Emoji、英文输入、部件拆字、OpenCC 扩展、置顶候选等功能配置。
 - `rime_frost.dict.yaml` 保留白霜中文词库导入，并启用了 `cn_dicts/tencent`。
 - `rime_frost.dict.yaml` 移除了上游正文里的大写字母、数字造词和 `V` 类 Emoji 入口词条。
-- 未引用上游 `lua/`、`opencc/`、`en_dicts/`、`symbols*.yaml`、双拼方案、T9 方案、仓颉方案等完整白霜配套文件。
+- 未引用上游 `lua/`、`opencc/`、`en_dicts/`、`symbols*.yaml`、T9 方案、仓颉方案等完整白霜配套文件。
 
 ## 混输行为
 

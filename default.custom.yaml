@@ -10,6 +10,8 @@ patch:
     - schema: rime_jidian_frost # 五笔白霜混输
     - schema: rime_frost # 白霜拼音
     - schema: rime_frost_static # 白霜拼音（不调频）
+    - schema: rime_frost_double_pinyin_flypy # 白霜小鹤双拼
+    - schema: rime_frost_double_pinyin_flypy_static # 白霜小鹤双拼（不调频）
 
   # Menu
   menu:
