@@ -16,7 +16,10 @@ JIDIAN_DICTS = {
     "wubi86_jidian.dict.yaml": "jidian_dicts/wubi86_jidian.dict.yaml",
 }
 
-FROST_DIRS = ("cn_dicts", "cn_dicts_cell")
+FROST_DIRS = {
+    "cn_dicts": "frost_dicts/cn_dicts",
+    "cn_dicts_cell": "frost_dicts/cn_dicts_cell",
+}
 
 
 def run(command: list[str], cwd: Path | None = None) -> None:
@@ -96,9 +99,14 @@ def merge_frost_dict(root: Path, upstream_root: Path, dry_run: bool) -> bool:
     for line in header.splitlines():
         if line.lstrip().startswith("# - cn_dicts/tencent"):
             indent = line[: len(line) - len(line.lstrip())]
-            lines.append(indent + line.lstrip()[2:])
+            lines.append(indent + line.lstrip()[2:].replace("cn_dicts/", "frost_dicts/cn_dicts/"))
         else:
-            lines.append(line)
+            lines.append(
+                line.replace("cn_dicts_cell/", "frost_dicts/cn_dicts_cell/").replace(
+                    "cn_dicts/",
+                    "frost_dicts/cn_dicts/",
+                )
+            )
 
     content = "\n".join(lines).rstrip() + "\n...\n\n"
     return write_if_changed(root / "rime_frost.dict.yaml", content, dry_run)
@@ -107,9 +115,9 @@ def merge_frost_dict(root: Path, upstream_root: Path, dry_run: bool) -> bool:
 def copy_frost_directories(root: Path, upstream_root: Path, dry_run: bool) -> list[Path]:
     changed: list[Path] = []
 
-    for directory in FROST_DIRS:
-        source_dir = upstream_root / directory
-        target_dir = root / directory
+    for source_directory, target_directory in FROST_DIRS.items():
+        source_dir = upstream_root / source_directory
+        target_dir = root / target_directory
         source_files = sorted(source_dir.glob("*.dict.yaml"))
 
         for source_path in source_files:

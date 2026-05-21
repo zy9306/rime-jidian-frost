@@ -22,10 +22,10 @@ PACKAGE_FILES = (
 )
 
 FROST_DICT_FILES = tuple(
-    f"cn_dicts/{name}.dict.yaml"
+    f"frost_dicts/cn_dicts/{name}.dict.yaml"
     for name in ("8105", "41448", "base", "ext", "tencent", "others", "corrections")
 ) + tuple(
-    f"cn_dicts_cell/{name}.dict.yaml"
+    f"frost_dicts/cn_dicts_cell/{name}.dict.yaml"
     for name in (
         "medication",
         "industry_product",

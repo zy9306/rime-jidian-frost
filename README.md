@@ -28,8 +28,8 @@
 - `rime_frost_static.schema.yaml`：白霜拼音纯拼音方案，关闭自动调频
 - `jidian_dicts/wubi86_jidian.dict.yaml`：极点五笔主码表，作为白霜五笔词库的单字编码来源
 - `rime_frost.dict.yaml`：白霜拼音聚合词库
-- `cn_dicts/`：白霜拼音基础词库
-- `cn_dicts_cell/`：白霜拼音细胞词库
+- `frost_dicts/cn_dicts/`：白霜拼音基础词库
+- `frost_dicts/cn_dicts_cell/`：白霜拼音细胞词库
 - `lua/rime_datetime_translator.lua`：日期、时间、星期候选
 - `scripts/generate_wubi86_frost_dict.py`：从白霜词库和极点单字码表生成五笔词库
 - `squirrel.custom.yaml`：鼠须管外观配置
@@ -75,8 +75,8 @@
 
 引用内容：
 
-- `cn_dicts/` 来自上游 `cn_dicts/`
-- `cn_dicts_cell/` 来自上游 `cn_dicts_cell/`
+- `frost_dicts/cn_dicts/` 来自上游 `cn_dicts/`
+- `frost_dicts/cn_dicts_cell/` 来自上游 `cn_dicts_cell/`
 - `rime_frost.dict.yaml` 基于上游 `rime_frost.dict.yaml`
 - `rime_frost.schema.yaml` 基于上游 `rime_frost.schema.yaml` 的词库和拼写规则需求重写
 
@@ -85,7 +85,7 @@
 - `rime_frost.schema.yaml` 被裁剪为轻量纯拼音方案，用于直接输入拼音。
 - `rime_frost_static.schema.yaml` 复用白霜词库和拼写规则，关闭 `enable_user_dict`，用于不自动调频的纯拼音输入。
 - 移除了白霜完整方案中的 Lua 功能、Emoji、英文输入、部件拆字、OpenCC 扩展、置顶候选等功能配置。
-- `rime_frost.dict.yaml` 保留白霜中文词库导入，并启用了 `cn_dicts/tencent`。
+- `rime_frost.dict.yaml` 保留白霜中文词库导入，并启用了 `frost_dicts/cn_dicts/tencent`。
 - `rime_frost.dict.yaml` 移除了上游正文里的大写字母、数字造词和 `V` 类 Emoji 入口词条。
 - 未引用上游 `lua/`、`opencc/`、`en_dicts/`、`symbols*.yaml`、T9 方案、仓颉方案等完整白霜配套文件。
 
@@ -150,8 +150,8 @@ make update-dicts-check
 合并规则：
 
 - 更新 `jidian_dicts/wubi86_jidian.dict.yaml`，但移除上游 `import_tables`，供生成脚本读取单字编码。
-- 更新 `cn_dicts/` 和 `cn_dicts_cell/` 下的白霜词库。
-- 更新 `rime_frost.dict.yaml` 的导入表，继续启用 `cn_dicts/tencent`，并保持正文为空。
+- 更新 `frost_dicts/cn_dicts/` 和 `frost_dicts/cn_dicts_cell/` 下的白霜词库。
+- 更新 `rime_frost.dict.yaml` 的导入表，继续启用 `frost_dicts/cn_dicts/tencent`，并保持正文为空。
 
 ## 格式化 YAML
 

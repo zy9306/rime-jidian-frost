@@ -5,37 +5,37 @@
 name: rime_frost
 version: "2023-11-13"
 import_tables:
-  - cn_dicts/8105 # 字表，约 8,529 条
-  - cn_dicts/41448 # 大字表（按需启用），约 43,217 条
-  - cn_dicts/base # 基础词库，约 365,730 条
-  - cn_dicts/ext # 扩展词库，约 235,519 条
-  - cn_dicts/tencent # 腾讯词向量（大词库，部署时间较长），约 342,566 条
-  - cn_dicts/others # 一些杂项，约 568 条
-  - cn_dicts/corrections # 错音错字提示，约 159 条
+  - frost_dicts/cn_dicts/8105 # 字表，约 8,529 条
+  - frost_dicts/cn_dicts/41448 # 大字表（按需启用），约 43,217 条
+  - frost_dicts/cn_dicts/base # 基础词库，约 365,730 条
+  - frost_dicts/cn_dicts/ext # 扩展词库，约 235,519 条
+  - frost_dicts/cn_dicts/tencent # 腾讯词向量（大词库，部署时间较长），约 342,566 条
+  - frost_dicts/cn_dicts/others # 一些杂项，约 568 条
+  - frost_dicts/cn_dicts/corrections # 错音错字提示，约 159 条
 
   # 细胞词库
-  - cn_dicts_cell/medication # 药品、医疗相关词库，约 129,408 条
-  - cn_dicts_cell/industry_product # 工业产品、商品型号相关词库，约 2,980 条
-  - cn_dicts_cell/exthot # 扩展热词、网络新词词库，约 2,080 条
-  - cn_dicts_cell/chess # 棋类基础词库，约 154 条
-  - cn_dicts_cell/chess2 # 棋类扩展词库，约 3,222 条
-  - cn_dicts_cell/animal # 动物相关词库，约 575 条
-  - cn_dicts_cell/game # 游戏相关词库，约 150,735 条
-  - cn_dicts_cell/idiom # 成语、熟语词库，约 48,714 条
-  - cn_dicts_cell/sport # 体育运动相关词库，约 13,264 条
-  - cn_dicts_cell/media # 媒体相关词库，约 9 条
-  - cn_dicts_cell/shulihua # 数理化相关词库，约 36,744 条
-  - cn_dicts_cell/food # 食物、餐饮相关词库，约 144,441 条
-  - cn_dicts_cell/inputmethod # 输入法相关词库，约 121 条
-  - cn_dicts_cell/history # 历史相关词库，约 19,953 条
-  - cn_dicts_cell/place # 地名、地点相关词库，约 6,395 条
-  - cn_dicts_cell/geography # 地理相关词库，约 2,607 条
-  - cn_dicts_cell/name2 # 人名扩展词库，约 18,360 条
-  - cn_dicts_cell/literature # 文学相关词库，约 35,462 条
-  - cn_dicts_cell/music # 音乐相关词库，约 23 条
-  - cn_dicts_cell/computer # 计算机相关词库，约 9 条
-  - cn_dicts_cell/composite # 综合扩展词库，约 622,444 条
-  - cn_dicts_cell/luna # 朙月拼音扩展词库，约 97,966 条
-  - cn_dicts_cell/name # 人名基础词库，约 1,352 条
+  - frost_dicts/cn_dicts_cell/medication # 药品、医疗相关词库，约 129,408 条
+  - frost_dicts/cn_dicts_cell/industry_product # 工业产品、商品型号相关词库，约 2,980 条
+  - frost_dicts/cn_dicts_cell/exthot # 扩展热词、网络新词词库，约 2,080 条
+  - frost_dicts/cn_dicts_cell/chess # 棋类基础词库，约 154 条
+  - frost_dicts/cn_dicts_cell/chess2 # 棋类扩展词库，约 3,222 条
+  - frost_dicts/cn_dicts_cell/animal # 动物相关词库，约 575 条
+  - frost_dicts/cn_dicts_cell/game # 游戏相关词库，约 150,735 条
+  - frost_dicts/cn_dicts_cell/idiom # 成语、熟语词库，约 48,714 条
+  - frost_dicts/cn_dicts_cell/sport # 体育运动相关词库，约 13,264 条
+  - frost_dicts/cn_dicts_cell/media # 媒体相关词库，约 9 条
+  - frost_dicts/cn_dicts_cell/shulihua # 数理化相关词库，约 36,744 条
+  - frost_dicts/cn_dicts_cell/food # 食物、餐饮相关词库，约 144,441 条
+  - frost_dicts/cn_dicts_cell/inputmethod # 输入法相关词库，约 121 条
+  - frost_dicts/cn_dicts_cell/history # 历史相关词库，约 19,953 条
+  - frost_dicts/cn_dicts_cell/place # 地名、地点相关词库，约 6,395 条
+  - frost_dicts/cn_dicts_cell/geography # 地理相关词库，约 2,607 条
+  - frost_dicts/cn_dicts_cell/name2 # 人名扩展词库，约 18,360 条
+  - frost_dicts/cn_dicts_cell/literature # 文学相关词库，约 35,462 条
+  - frost_dicts/cn_dicts_cell/music # 音乐相关词库，约 23 条
+  - frost_dicts/cn_dicts_cell/computer # 计算机相关词库，约 9 条
+  - frost_dicts/cn_dicts_cell/composite # 综合扩展词库，约 622,444 条
+  - frost_dicts/cn_dicts_cell/luna # 朙月拼音扩展词库，约 97,966 条
+  - frost_dicts/cn_dicts_cell/name # 人名基础词库，约 1,352 条
 ...
 
