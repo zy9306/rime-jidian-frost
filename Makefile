@@ -5,15 +5,15 @@ ROOT := $(CURDIR)
 
 .PHONY: help
 help:
-	@printf '%s\n' 'Targets:'
-	@printf '%s\n' '  make generate-wubi86-frost Generate Wubi86 dictionary from Rime Frost'
-	@printf '%s\n' '  make build              Build Rime config with rime_deployer'
-	@printf '%s\n' '  make pack               Create dist/rime-wubi86-frost.zip'
-	@printf '%s\n' '  make update-dicts       Fetch and merge upstream dictionaries'
-	@printf '%s\n' '  make update-dicts-check Preview upstream dictionary changes'
-	@printf '%s\n' '  make format             Format YAML with Prettier'
-	@printf '%s\n' '  make format-check       Preview YAML formatting changes'
-	@printf '%s\n' '  make check              Compile Python scripts and build Rime config'
+	@printf '%s\n' '可用目标：'
+	@printf '%s\n' '  make generate-wubi86-frost  从白霜词库生成五笔 86 词库'
+	@printf '%s\n' '  make build                  使用 rime_deployer 编译 Rime 配置'
+	@printf '%s\n' '  make pack                   直接打包为 dist/rime-wubi86-frost.zip'
+	@printf '%s\n' '  make update-dicts           拉取并合并上游词库'
+	@printf '%s\n' '  make update-dicts-check     预览上游词库更新会修改哪些文件'
+	@printf '%s\n' '  make format                 使用 Prettier 格式化 YAML'
+	@printf '%s\n' '  make format-check           预览 YAML 格式化会修改哪些文件'
+	@printf '%s\n' '  make check                  编译 Python 脚本并构建 Rime 配置'
 
 .PHONY: generate-wubi86-frost
 generate-wubi86-frost:
@@ -24,7 +24,7 @@ build: generate-wubi86-frost
 	"$(RIME_DEPLOYER)" --build "$(ROOT)" "$(SHARED_DATA_DIR)" "$(ROOT)/build"
 
 .PHONY: pack
-pack: generate-wubi86-frost
+pack:
 	$(PYTHON) scripts/pack.py
 
 .PHONY: update-dicts
