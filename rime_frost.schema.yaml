@@ -8,7 +8,7 @@ schema:
   author:
     - gaboolic
   description: |
-    白霜拼音纯拼音方案，同时供五笔混输方案引用。
+    白霜拼音纯拼音方案。
 
 switches:
   - name: ascii_mode

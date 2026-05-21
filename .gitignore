@@ -10,10 +10,7 @@ installation.yaml
 user.yaml
 sync/*
 luna_pinyin.userdb/*
-wubi86_jidian.userdb
 user.txt
 pinyin_simp.userdb/*
 
 others
-
-wubi86_jidian_pinyin_review.tsv

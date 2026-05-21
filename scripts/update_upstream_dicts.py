@@ -14,11 +14,9 @@ FROST_REPO = "https://github.com/gaboolic/rime-frost.git"
 
 JIDIAN_DICTS = {
     "wubi86_jidian.dict.yaml": "jidian_dicts/wubi86_jidian.dict.yaml",
-    "wubi86_jidian_extra.dict.yaml": "jidian_dicts/wubi86_jidian_extra.dict.yaml",
 }
 
 FROST_DIRS = ("cn_dicts", "cn_dicts_cell")
-GENERATED_LOCAL_MARKER = "## 本地保留词条"
 
 
 def run(command: list[str], cwd: Path | None = None) -> None:
@@ -61,22 +59,6 @@ def remove_import_tables(header: str) -> str:
     return "\n".join(result).rstrip() + "\n"
 
 
-def replace_dict_name(header: str, name: str) -> str:
-    lines = header.splitlines()
-    replaced = False
-
-    for index, line in enumerate(lines):
-        if line.startswith("name:"):
-            lines[index] = f"name: {name}"
-            replaced = True
-            break
-
-    if not replaced:
-        raise ValueError("Rime dictionary header is missing 'name'")
-
-    return "\n".join(lines).rstrip() + "\n"
-
-
 def write_if_changed(path: Path, content: str, dry_run: bool) -> bool:
     previous = path.read_text(encoding="utf-8") if path.exists() else None
     if previous == content:
@@ -86,36 +68,6 @@ def write_if_changed(path: Path, content: str, dry_run: bool) -> bool:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
     return True
-
-
-def merge_user_dict(root: Path, upstream_root: Path, dry_run: bool) -> bool:
-    local_path = root / "rime_user.dict.yaml"
-    upstream_path = upstream_root / "wubi86_jidian_user.dict.yaml"
-
-    upstream_header, upstream_body = split_rime_dict(upstream_path.read_text(encoding="utf-8"))
-    upstream_header = replace_dict_name(upstream_header, "rime_user")
-
-    local_body = ""
-    if local_path.exists():
-        _, local_body = split_rime_dict(local_path.read_text(encoding="utf-8"))
-
-    upstream_lines = upstream_body.splitlines()
-    upstream_line_set = set(upstream_lines)
-    local_extra_lines = [
-        line
-        for line in local_body.splitlines()
-        if line not in upstream_line_set and line != GENERATED_LOCAL_MARKER
-    ]
-
-    body_lines = upstream_lines[:]
-    if local_extra_lines:
-        if body_lines and body_lines[-1].strip():
-            body_lines.append("")
-        body_lines.append(GENERATED_LOCAL_MARKER)
-        body_lines.extend(local_extra_lines)
-
-    content = upstream_header + "...\n" + "\n".join(body_lines).rstrip() + "\n"
-    return write_if_changed(local_path, content, dry_run)
 
 
 def merge_jidian_dicts(root: Path, upstream_root: Path, dry_run: bool) -> list[Path]:
@@ -132,9 +84,6 @@ def merge_jidian_dicts(root: Path, upstream_root: Path, dry_run: bool) -> list[P
 
         if write_if_changed(target_path, content, dry_run):
             changed.append(target_path)
-
-    if merge_user_dict(root, upstream_root, dry_run):
-        changed.append(root / "rime_user.dict.yaml")
 
     return changed
 

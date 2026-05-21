@@ -1,12 +1,12 @@
-# 极点五笔86·白霜混输
+# 五笔86·白霜词库
 
-这是一份个人 Rime 配置，包含五份输入方案：`极点五笔86·白霜混输`、`白霜拼音`、`白霜拼音（不调频）`、`白霜小鹤双拼` 和 `白霜小鹤双拼（不调频）`。
+这是一份个人 Rime 配置，包含四份输入方案：`五笔86·白霜词库`、`五笔86·白霜混输`、`白霜拼音` 和 `白霜拼音（不调频）`。
 
-主方案文件：`rime_jidian_frost.schema.yaml`
+主方案文件：`rime_wubi86_frost.schema.yaml`
 
-主方案 ID：`rime_jidian_frost`
+主方案 ID：`rime_wubi86_frost`
 
-本配置把极点五笔 86 作为主输入，三码起无前缀混入白霜拼音候选；同时保留可直接切换使用的纯白霜拼音方案 `rime_frost`、关闭自动调频的静态方案 `rime_frost_static`，以及复用白霜词库的小鹤双拼方案。
+本配置默认使用纯五笔 86 方案：词条来自白霜词库，单字编码参考极点五笔。另提供三码起混入白霜拼音候选的混输方案、纯白霜拼音方案和关闭自动调频的静态方案。
 
 ## 上游来源
 
@@ -19,22 +19,42 @@
 
 ## 当前结构
 
-- `default.custom.yaml`：启用 `rime_jidian_frost`、`rime_frost` 和 `rime_frost_static`
-- `rime_jidian_frost.schema.yaml`：极点五笔 + 白霜拼音混输方案
-- `rime_frost.schema.yaml`：白霜拼音纯拼音方案，同时作为混输依赖
+- `default.custom.yaml`：启用 `rime_wubi86_frost`、`rime_wubi86_frost_mix`、`rime_frost` 和 `rime_frost_static`
+- `rime_wubi86_frost.schema.yaml`：五笔 86 纯五笔方案，使用白霜词库生成的五笔码表
+- `rime_wubi86_frost_mix.schema.yaml`：五笔 86 + 白霜拼音混输方案
+- `rime_wubi86_frost.dict.yaml`：由脚本生成的白霜五笔词库
+- `rime_wubi86_frost.missing.tsv`：生成五笔词库时跳过的无法编码词条日志
+- `rime_frost.schema.yaml`：白霜拼音纯拼音方案
 - `rime_frost_static.schema.yaml`：白霜拼音纯拼音方案，关闭自动调频
-- `rime_frost_double_pinyin_flypy.schema.yaml`：白霜小鹤双拼方案
-- `rime_frost_double_pinyin_flypy_static.schema.yaml`：白霜小鹤双拼方案，关闭自动调频
-- `rime_jidian.dict.yaml`：五笔入口词库，聚合极点主词库、个人词库和扩展词库
-- `rime_user.dict.yaml`：个人词库
-- `jidian_dicts/wubi86_jidian.dict.yaml`：极点五笔主码表
-- `jidian_dicts/wubi86_jidian_extra.dict.yaml`：极点五笔扩展词库
+- `jidian_dicts/wubi86_jidian.dict.yaml`：极点五笔主码表，作为白霜五笔词库的单字编码来源
 - `rime_frost.dict.yaml`：白霜拼音聚合词库
 - `cn_dicts/`：白霜拼音基础词库
 - `cn_dicts_cell/`：白霜拼音细胞词库
 - `lua/rime_datetime_translator.lua`：日期、时间、星期候选
+- `scripts/generate_wubi86_frost_dict.py`：从白霜词库和极点单字码表生成五笔词库
 - `squirrel.custom.yaml`：鼠须管外观配置
 - `weasel.custom.yaml`：小狼毫外观配置，可不用
+
+## 五笔86·白霜词库
+
+`rime_wubi86_frost.dict.yaml` 是生成文件，不手工维护。生成规则：
+
+- 词条来源为 `rime_frost.dict.yaml` 当前启用的全部 `import_tables`。
+- 单字编码来源为 `jidian_dicts/wubi86_jidian.dict.yaml`。
+- 单字保留极点五笔简码和全码；权重优先采用白霜单字权重，缺失时使用极点权重。
+- 多字词按 86 五笔规则自动取码：二字 `AaAbBaBb`，三字 `AaBaCaCb`，四字及以上 `AaBaCaZa`。
+- 含有极点单字码表未覆盖字符的白霜词条会跳过，并在生成时输出缺失字统计。
+- 跳过词条会记录到 `rime_wubi86_frost.missing.tsv`，字段为来源词库、词条、原白霜编码、权重和缺失字符。
+
+纯五笔方案关闭四码唯一自动上屏，并支持 `z` 键前缀拼音反查。
+
+## 五笔86·白霜混输
+
+- 五笔候选来自 `rime_wubi86_frost` 生成词库。
+- 拼音候选来自 `rime_frost`。
+- 一码、二码只查五笔词库。
+- 三码起通过 `reverse_lookup` 查询白霜拼音词库。
+- 关闭四码唯一自动上屏，避免误选拼音候选。
 
 ## 引用和修改：极点五笔
 
@@ -43,17 +63,11 @@
 引用内容：
 
 - `jidian_dicts/wubi86_jidian.dict.yaml` 来自上游 `wubi86_jidian.dict.yaml`
-- `jidian_dicts/wubi86_jidian_extra.dict.yaml` 来自上游 `wubi86_jidian_extra.dict.yaml`
-- `rime_user.dict.yaml` 基于上游 `wubi86_jidian_user.dict.yaml`
 
 本地修改：
 
-- 新增根入口词库 `rime_jidian.dict.yaml`，统一导入极点主词库、个人词库和扩展词库。
-- `jidian_dicts/wubi86_jidian.dict.yaml` 去掉了上游头部的 `import_tables`，只保留主码表本体，避免子目录词库重复导入。
-- `rime_user.dict.yaml` 将上游 `name: wubi86_jidian_user` 改为 `name: rime_user`。
-- `rime_user.dict.yaml` 增加了“白霜 8105 二码拼音同音前 15 字”词条，用于补充二码拼音候选。
-- 未引用上游 `wubi86_jidian_user_hamster.dict.yaml`。
-- 未引用上游 `wubi86_jidian_extra_district.dict.yaml`。
+- `jidian_dicts/wubi86_jidian.dict.yaml` 去掉了上游头部的 `import_tables`，只保留主码表本体，供生成脚本读取单字编码。
+- 未保留极点混输方案、极点扩展词库入口和极点用户词库方案入口。
 
 ## 引用和修改：白霜拼音
 
@@ -68,22 +82,12 @@
 
 本地修改：
 
-- `rime_frost.schema.yaml` 被裁剪为轻量纯拼音方案，用于直接输入拼音，也供 `rime_jidian_frost` 反查混输。
+- `rime_frost.schema.yaml` 被裁剪为轻量纯拼音方案，用于直接输入拼音。
 - `rime_frost_static.schema.yaml` 复用白霜词库和拼写规则，关闭 `enable_user_dict`，用于不自动调频的纯拼音输入。
-- `rime_frost_double_pinyin_flypy.schema.yaml` 和 `rime_frost_double_pinyin_flypy_static.schema.yaml` 复用本地轻量白霜结构，只迁移上游小鹤双拼的 `speller/algebra` 和 `translator/preedit_format`。
 - 移除了白霜完整方案中的 Lua 功能、Emoji、英文输入、部件拆字、OpenCC 扩展、置顶候选等功能配置。
 - `rime_frost.dict.yaml` 保留白霜中文词库导入，并启用了 `cn_dicts/tencent`。
 - `rime_frost.dict.yaml` 移除了上游正文里的大写字母、数字造词和 `V` 类 Emoji 入口词条。
 - 未引用上游 `lua/`、`opencc/`、`en_dicts/`、`symbols*.yaml`、T9 方案、仓颉方案等完整白霜配套文件。
-
-## 混输行为
-
-- 五笔候选来自 `rime_jidian`。
-- 拼音候选来自 `rime_frost`。
-- 一码、二码只查五笔词库。
-- 三码起通过 `reverse_lookup` 查询白霜拼音词库。
-- 关闭四码唯一自动上屏，避免误选拼音候选。
-- 简繁切换使用 `s2hk.json`。
 
 ## 部署
 
@@ -96,13 +100,25 @@
 macOS 可手动编译验证：
 
 ```bash
-"/Library/Input Methods/Squirrel.app/Contents/MacOS/rime_deployer" --build "$HOME/Library/Rime"
+"/Library/Input Methods/Squirrel.app/Contents/MacOS/rime_deployer" --build "$HOME/Library/Rime" "/Library/Input Methods/Squirrel.app/Contents/SharedSupport" "$HOME/Library/Rime/build"
 ```
 
-也可以使用 Makefile：
+也可以使用 Makefile，构建前会自动生成 `rime_wubi86_frost.dict.yaml`：
 
 ```bash
 make build
+```
+
+单独生成白霜五笔词库：
+
+```bash
+make generate-wubi86-frost
+```
+
+旧版手动编译命令也可用于只检查用户目录：
+
+```bash
+"/Library/Input Methods/Squirrel.app/Contents/MacOS/rime_deployer" --build "$HOME/Library/Rime"
 ```
 
 ## 打包
@@ -114,7 +130,7 @@ make pack
 默认输出：
 
 ```text
-dist/rime-jidian-frost.zip
+dist/rime-wubi86-frost.zip
 ```
 
 ## 更新上游词典
@@ -133,9 +149,7 @@ make update-dicts-check
 
 合并规则：
 
-- 更新 `jidian_dicts/wubi86_jidian.dict.yaml`，但移除上游 `import_tables`，继续由 `rime_jidian.dict.yaml` 统一聚合。
-- 更新 `jidian_dicts/wubi86_jidian_extra.dict.yaml`。
-- 更新 `rime_user.dict.yaml` 的上游模板部分，并保留本地新增词条。
+- 更新 `jidian_dicts/wubi86_jidian.dict.yaml`，但移除上游 `import_tables`，供生成脚本读取单字编码。
 - 更新 `cn_dicts/` 和 `cn_dicts_cell/` 下的白霜词库。
 - 更新 `rime_frost.dict.yaml` 的导入表，继续启用 `cn_dicts/tencent`，并保持正文为空。
 

@@ -6,20 +6,25 @@ ROOT := $(CURDIR)
 .PHONY: help
 help:
 	@printf '%s\n' 'Targets:'
+	@printf '%s\n' '  make generate-wubi86-frost Generate Wubi86 dictionary from Rime Frost'
 	@printf '%s\n' '  make build              Build Rime config with rime_deployer'
-	@printf '%s\n' '  make pack               Create dist/rime-jidian-frost.zip'
+	@printf '%s\n' '  make pack               Create dist/rime-wubi86-frost.zip'
 	@printf '%s\n' '  make update-dicts       Fetch and merge upstream dictionaries'
 	@printf '%s\n' '  make update-dicts-check Preview upstream dictionary changes'
 	@printf '%s\n' '  make format             Format YAML with Prettier'
 	@printf '%s\n' '  make format-check       Preview YAML formatting changes'
 	@printf '%s\n' '  make check              Compile Python scripts and build Rime config'
 
+.PHONY: generate-wubi86-frost
+generate-wubi86-frost:
+	$(PYTHON) scripts/generate_wubi86_frost_dict.py
+
 .PHONY: build
-build:
+build: generate-wubi86-frost
 	"$(RIME_DEPLOYER)" --build "$(ROOT)" "$(SHARED_DATA_DIR)" "$(ROOT)/build"
 
 .PHONY: pack
-pack:
+pack: generate-wubi86-frost
 	$(PYTHON) scripts/pack.py
 
 .PHONY: update-dicts
@@ -39,6 +44,6 @@ format-check:
 	$(PYTHON) scripts/format_yaml.py --dry-run
 
 .PHONY: check
-check:
-	$(PYTHON) -m py_compile scripts/pack.py scripts/update_upstream_dicts.py scripts/format_yaml.py
+check: generate-wubi86-frost
+	$(PYTHON) -m py_compile scripts/pack.py scripts/update_upstream_dicts.py scripts/format_yaml.py scripts/generate_wubi86_frost_dict.py
 	"$(RIME_DEPLOYER)" --build "$(ROOT)" "$(SHARED_DATA_DIR)" "$(ROOT)/build"

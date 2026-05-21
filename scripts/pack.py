@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Package the Jidian Wubi + Rime Frost mixed-input scheme."""
+"""Package the Wubi86 + Rime Frost schemes."""
 
 from __future__ import annotations
 
@@ -12,16 +12,12 @@ PACKAGE_FILES = (
     "default.custom.yaml",
     "squirrel.custom.yaml",
     "weasel.custom.yaml",
-    "rime_jidian_frost.schema.yaml",
-    "rime_jidian.dict.yaml",
-    "rime_user.dict.yaml",
+    "rime_wubi86_frost.schema.yaml",
+    "rime_wubi86_frost_mix.schema.yaml",
+    "rime_wubi86_frost.dict.yaml",
     "rime_frost.schema.yaml",
     "rime_frost_static.schema.yaml",
-    "rime_frost_double_pinyin_flypy.schema.yaml",
-    "rime_frost_double_pinyin_flypy_static.schema.yaml",
     "rime_frost.dict.yaml",
-    "jidian_dicts/wubi86_jidian.dict.yaml",
-    "jidian_dicts/wubi86_jidian_extra.dict.yaml",
     "lua/rime_datetime_translator.lua",
 )
 
@@ -59,10 +55,10 @@ FROST_DICT_FILES = tuple(
 
 
 def package_lua_full(root: Path | str | None = None, output: Path | str | None = None) -> Path:
-    """Create a zip containing the Jidian Frost mixed-input scheme files."""
+    """Create a zip containing the Wubi86 and Rime Frost scheme files."""
     repo_root = Path(root) if root else Path(__file__).resolve().parents[1]
     repo_root = repo_root.resolve()
-    zip_path = Path(output) if output else repo_root / "dist" / "rime-jidian-frost.zip"
+    zip_path = Path(output) if output else repo_root / "dist" / "rime-wubi86-frost.zip"
     if not zip_path.is_absolute():
         zip_path = repo_root / zip_path
 
@@ -83,7 +79,7 @@ def package_lua_full(root: Path | str | None = None, output: Path | str | None =
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default=None, help="Rime config directory; defaults to repository root")
-    parser.add_argument("--output", default=None, help="Output zip path; defaults to dist/rime-jidian-frost.zip")
+    parser.add_argument("--output", default=None, help="Output zip path; defaults to dist/rime-wubi86-frost.zip")
     return parser.parse_args()
 
 

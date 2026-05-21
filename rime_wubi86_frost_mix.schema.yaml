@@ -1,0 +1,97 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: rime_wubi86_frost_mix
+  name: "五笔86·白霜混输"
+  version: "1.0"
+  ascii_icon:
+  author:
+    - 创始人 王永民先生
+    - 词库 gaboolic
+  description: |
+    五笔字形 86 白霜混输方案。五笔候选来自白霜五笔词库，三码起混入白霜拼音候选。
+  dependencies:
+    - rime_frost
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [中, En]
+  - name: zh_trad
+    reset: 0
+    states: [简体, 繁体]
+  - name: full_shape
+    states: [半角, 全角]
+  - name: extended_charset
+    states: [常用, 扩展]
+  - name: ascii_punct
+    states: [。，, ．，]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - table_translator
+    - reverse_lookup_translator
+    - lua_translator@*rime_datetime_translator # 日期、时间、星期
+  filters:
+    - simplifier@tradition
+
+speller:
+  # 混输方案关闭四码唯一自动上屏，避免误选拼音候选。
+  auto_select: false
+
+translator:
+  dictionary: rime_wubi86_frost
+  enable_charset_filter: true
+  enable_completion: true
+  enable_sentence: false
+  enable_user_dict: false
+  enable_encoder: false
+  encode_commit_history: false
+  initial_quality: 1
+  comment_format:
+    - xform/.+//
+
+tradition:
+  opencc_config: s2hk.json
+  option_name: zh_trad
+
+# 三码起进行无前缀白霜拼音混输，一二码只查白霜五笔词库。
+reverse_lookup:
+  dictionary: rime_frost
+  prism: rime_frost
+  initial_quality: 0.3
+  prefix: ""
+  suffix: ""
+  tips: [拼音]
+  preedit_format:
+    - xform/([nl])v/$1v/
+    - xform/([nl])ue/$1ve/
+    - xform/([jqxy])v/$1u/
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+  patterns:
+    reverse_lookup: "^[a-z]{3,}$"

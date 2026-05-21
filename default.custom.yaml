@@ -7,11 +7,10 @@
 patch:
   # 菜单中可选的方案列表，可根据喜好自行调整顺序，第一位为默认方案
   schema_list:
-    - schema: rime_jidian_frost # 五笔白霜混输
+    - schema: rime_wubi86_frost # 五笔86白霜词库
+    - schema: rime_wubi86_frost_mix # 五笔86白霜混输
     - schema: rime_frost # 白霜拼音
     - schema: rime_frost_static # 白霜拼音（不调频）
-    - schema: rime_frost_double_pinyin_flypy # 白霜小鹤双拼
-    - schema: rime_frost_double_pinyin_flypy_static # 白霜小鹤双拼（不调频）
 
   # Menu
   menu:
