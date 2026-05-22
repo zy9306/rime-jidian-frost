@@ -23,6 +23,7 @@
 - `rime_wubi86_frost.schema.yaml`：五笔 86 纯五笔方案，使用白霜词库生成的五笔码表
 - `rime_wubi86_frost_mix.schema.yaml`：五笔 86 + 白霜拼音混输方案
 - `rime_wubi86_frost.dict.yaml`：由脚本生成的白霜五笔词库
+- `rime_wubi86_frost_first.dict.yaml`：一级简码优先候选覆盖词库
 - `rime_wubi86_frost.missing.tsv`：生成五笔词库时跳过的无法编码词条日志
 - `rime_frost.schema.yaml`：白霜拼音纯拼音方案
 - `rime_frost_static.schema.yaml`：白霜拼音纯拼音方案，关闭自动调频
@@ -42,6 +43,7 @@
 - 词条来源为 `rime_frost.dict.yaml` 当前启用的全部 `import_tables`。
 - 单字编码来源为 `jidian_dicts/wubi86_jidian.dict.yaml`。
 - 单字保留极点五笔简码和全码；权重优先采用白霜单字权重，缺失时使用极点权重。
+- 一级简码由 `rime_wubi86_frost_first.dict.yaml` 单独维护，并通过 `import_tables` 导入主词库；生成的主词库正文不再输出一级码，避免重复词条沿用白霜权重。
 - 多字词按 86 五笔规则自动取码：二字 `AaAbBaBb`，三字 `AaBaCaCb`，四字及以上 `AaBaCaZa`。
 - 含有极点单字码表未覆盖字符的白霜词条会跳过，并在生成时输出缺失字统计。
 - 跳过词条会记录到 `rime_wubi86_frost.missing.tsv`，字段为来源词库、词条、原白霜编码、权重和缺失字符。

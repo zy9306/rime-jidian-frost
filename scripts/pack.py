@@ -15,6 +15,7 @@ PACKAGE_FILES = (
     "rime_wubi86_frost.schema.yaml",
     "rime_wubi86_frost_mix.schema.yaml",
     "rime_wubi86_frost.dict.yaml",
+    "rime_wubi86_frost_first.dict.yaml",
     "rime_frost.schema.yaml",
     "rime_frost_static.schema.yaml",
     "rime_frost.dict.yaml",

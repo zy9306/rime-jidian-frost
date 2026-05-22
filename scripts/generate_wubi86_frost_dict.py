@@ -12,6 +12,7 @@ from pathlib import Path
 DICT_SEPARATOR = "\n...\n"
 JIDIAN_DICT = Path("jidian_dicts/wubi86_jidian.dict.yaml")
 FROST_DICT = Path("rime_frost.dict.yaml")
+FIRST_CODE_DICT = Path("rime_wubi86_frost_first.dict.yaml")
 OUTPUT_DICT = Path("rime_wubi86_frost.dict.yaml")
 MISSING_LOG = Path("rime_wubi86_frost.missing.tsv")
 
@@ -90,6 +91,10 @@ def parse_frost_imports(root: Path) -> list[Path]:
     return imports
 
 
+def load_first_code_dict(root: Path) -> set[tuple[str, str]]:
+    return {(parts[0], parts[1]) for parts in iter_dict_rows(root / FIRST_CODE_DICT)}
+
+
 def load_single_codes(root: Path) -> tuple[dict[str, list[SingleCode]], dict[str, str]]:
     by_char: dict[str, list[SingleCode]] = {}
 
@@ -160,6 +165,7 @@ def collect_frost_entries(
 
 def build_rows(root: Path) -> tuple[list[tuple[str, str, int]], list[MissingEntry], Stats]:
     single_codes, canonical_codes = load_single_codes(root)
+    first_code_entries = load_first_code_dict(root)
     frost_weights, missing_entries, missing_chars, frost_rows, skipped_rows = collect_frost_entries(
         root,
         canonical_codes,
@@ -173,6 +179,8 @@ def build_rows(root: Path) -> tuple[list[tuple[str, str, int]], list[MissingEntr
         fallback_weight = max(code.weight for code in codes)
         weight = frost_weights.get(text, fallback_weight)
         for single_code in codes:
+            if (text, single_code.code) in first_code_entries:
+                continue
             rows[(text, single_code.code)] = max(rows.get((text, single_code.code), 0), weight)
 
     sorted_rows = sorted(
@@ -201,6 +209,8 @@ def render_dict(rows: list[tuple[str, str, int]]) -> str:
 name: rime_wubi86_frost
 version: "2026-05-21"
 sort: by_weight
+import_tables:
+  - rime_wubi86_frost_first
 columns:
   - text
   - code
