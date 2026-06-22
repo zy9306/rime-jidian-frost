@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -13,6 +14,7 @@ DICT_SEPARATOR = "\n...\n"
 JIDIAN_DICT = Path("jidian_dicts/wubi86_jidian.dict.yaml")
 FROST_DICT = Path("rime_frost.dict.yaml")
 FIRST_CODE_DICT = Path("rime_wubi86_frost_first.dict.yaml")
+EXTRA_ORDER = Path("extra_order.csv")
 OUTPUT_DICT = Path("rime_wubi86_frost.dict.yaml")
 MISSING_LOG = Path("rime_wubi86_frost.missing.tsv")
 
@@ -73,6 +75,37 @@ def parse_weight(parts: list[str], default: int = 0) -> int:
         return int(parts[2])
     except ValueError:
         return default
+
+
+def load_extra_order(root: Path) -> dict[str, int]:
+    path = root / EXTRA_ORDER
+    if not path.exists():
+        return {}
+
+    weights: dict[str, int] = {}
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+
+        if "," in stripped:
+            parts = next(csv.reader([stripped]))
+        else:
+            parts = stripped.split()
+
+        if len(parts) < 2:
+            raise ValueError(f"{EXTRA_ORDER}:{line_number}: expected text and weight")
+
+        text = parts[0].strip()
+        try:
+            weight = int(parts[1])
+        except ValueError as exc:
+            raise ValueError(f"{EXTRA_ORDER}:{line_number}: invalid weight {parts[1]!r}") from exc
+
+        if text:
+            weights[text] = weight
+
+    return weights
 
 
 def parse_frost_imports(root: Path) -> list[Path]:
@@ -166,6 +199,7 @@ def collect_frost_entries(
 def build_rows(root: Path) -> tuple[list[tuple[str, str, int]], list[MissingEntry], Stats]:
     single_codes, canonical_codes = load_single_codes(root)
     first_code_entries = load_first_code_dict(root)
+    extra_weights = load_extra_order(root)
     frost_weights, missing_entries, missing_chars, frost_rows, skipped_rows = collect_frost_entries(
         root,
         canonical_codes,
@@ -173,11 +207,18 @@ def build_rows(root: Path) -> tuple[list[tuple[str, str, int]], list[MissingEntr
 
     rows: dict[tuple[str, str], int] = {}
     for text, weight in frost_weights.items():
+        weight = extra_weights.get(text, weight)
         rows[(text, encode_word(text, canonical_codes))] = weight
+
+    for text, weight in extra_weights.items():
+        if text in frost_weights:
+            continue
+        if all(char in canonical_codes for char in text):
+            rows[(text, encode_word(text, canonical_codes))] = weight
 
     for text, codes in single_codes.items():
         fallback_weight = max(code.weight for code in codes)
-        weight = frost_weights.get(text, fallback_weight)
+        weight = extra_weights.get(text, frost_weights.get(text, fallback_weight))
         for single_code in codes:
             if (text, single_code.code) in first_code_entries:
                 continue
